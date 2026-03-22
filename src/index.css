@@ -1,5 +1,21 @@
-*, *::before, *::after {
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg:           #ffffff;
+  --bg-warm:      #f5f4ee;
+  --bg-dark:      #0d0c0a;
+  --bg-dark2:     #181510;
+  --text:         #111111;
+  --text-muted:   #777777;
+  --text-dark:    #f0ede5;
+  --text-dark-muted: #6e6b62;
+  --accent:       #c4a35a;
+  --accent-light: #e8d9b3;
+  --border:       #e0ddd7;
+  --border-dark:  #252219;
+  --radius:       2px;
 }
 
 body {
@@ -8,22 +24,22 @@ body {
   font-family: 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #fff;
-  color: #1e293b;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
+  font-family: 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+  font-weight: 700;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
-p {
-  margin: 0;
-}
-
-ul, ol {
-  margin: 0;
-  padding: 0;
-}
+h4, h5, h6, p, span { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+a:hover { opacity: 0.75; }
 
 #root {
   min-height: 100vh;
@@ -34,55 +50,51 @@ ul, ol {
   border: none;
 }
 
-/* ─── Navigation ─────────────────────────── */
-
+/* ── Nav ────────────────────────── */
 .sw-nav {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(15, 23, 42, 0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(13, 12, 10, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-dark);
 }
-
-.nav-desktop {
-  display: flex;
-}
-
-.nav-hamburger {
-  display: none;
-}
+.nav-desktop { display: flex; }
+.nav-hamburger { display: none; }
 
 @media (max-width: 900px) {
-  .nav-desktop {
-    display: none !important;
-  }
-  .nav-hamburger {
-    display: block !important;
-  }
+  .nav-desktop  { display: none !important; }
+  .nav-hamburger{ display: block !important; }
 }
 
-/* ─── Scroll behavior ────────────────────── */
-html {
-  scroll-behavior: smooth;
-}
+/* ── Utilities ───────────────────── */
+html { scroll-behavior: smooth; }
 
-/* ─── Focus styles ───────────────────────── */
 :focus-visible {
-  outline: 2px solid #f59e0b;
-  outline-offset: 2px;
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
 }
 
-/* ─── Link hover helper ──────────────────── */
-a:hover {
-  opacity: 0.85;
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px rgba(196, 163, 90, 0.15);
 }
 
-/* ─── Input focus ────────────────────────── */
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #f59e0b !important;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+/* ── Section label ───────────────── */
+.label {
+  font-family: 'Hiragino Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Thin divider line ───────────── */
+.divider {
+  width: 2.5rem;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 auto;
 }

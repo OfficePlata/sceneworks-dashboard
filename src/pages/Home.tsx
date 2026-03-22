@@ -1,274 +1,179 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Users, CalendarDays, ShoppingBag, Star, Building2, Heart, TrendingUp } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useCounter } from '../hooks/useCounter';
 
-function MetricCard({ end, suffix, label, sub }: { end: number; suffix: string; label: string; sub: string }) {
-  const { count, ref } = useCounter(end, 2000);
+/* ── カウンターカード ───────────────────────── */
+function StatCard({ end, suffix, label, note }: { end: number; suffix: string; label: string; note: string }) {
+  const { count, ref } = useCounter(end, 2200);
   return (
-    <div
-      ref={ref}
-      style={{
-        background: '#fff',
-        borderRadius: '1rem',
-        padding: '2rem 1.5rem',
-        textAlign: 'center',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-        border: '1px solid #f1f5f9',
-      }}
-    >
-      <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>
-        {count.toLocaleString()}<span style={{ fontSize: '1.2rem', color: '#f59e0b' }}>{suffix}</span>
+    <div ref={ref} style={{ padding: '2.5rem 2rem', borderRight: '1px solid #e0ddd7' }}>
+      <div style={{ fontFamily: "'Noto Serif JP', serif", fontSize: 'clamp(2.2rem, 4vw, 3rem)', fontWeight: 700, color: '#111', lineHeight: 1, marginBottom: '0.5rem' }}>
+        {count.toLocaleString()}<span style={{ fontSize: '1.1rem', color: '#c4a35a', marginLeft: '0.1rem' }}>{suffix}</span>
       </div>
-      <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b', marginTop: '0.5rem' }}>{label}</div>
-      <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.25rem' }}>{sub}</div>
+      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#111', marginBottom: '0.2rem' }}>{label}</div>
+      <div style={{ fontSize: '0.72rem', color: '#999' }}>{note}</div>
     </div>
   );
 }
 
-const audiences = [
-  {
-    icon: <Building2 size={28} color="#2563eb" />,
-    bg: '#eff6ff',
-    tag: '金融機関・投資家向け',
-    tagColor: '#2563eb',
-    title: '数字で証明される収益モデル',
-    body: '高利益率の物販・イベントと安定ストック収益のハイブリッド構造。Lark等DX活用による低コスト体質と、代表の人脈資産を数値化して提示します。',
-    link: '/model',
-    linkLabel: 'ビジネスモデルを見る',
-  },
-  {
-    icon: <TrendingUp size={28} color="#10b981" />,
-    bg: '#ecfdf5',
-    tag: '自治体・企業 (B2B)',
-    tagColor: '#10b981',
-    title: '地方課題を、エンタメで解決',
-    body: '「地方に人が集まらない」「自社ブランドが弱い」という課題に、ロケコーディネートやキャスティングで具体的な経済効果を生み出します。',
-    link: '/works',
-    linkLabel: '実績を見る',
-  },
-  {
-    icon: <Heart size={28} color="#e63946" />,
-    bg: '#fff1f2',
-    tag: 'エンドユーザー・ファン',
-    tagColor: '#e63946',
-    title: '今すぐ手に入れる、熱狂の一品',
-    body: 'ボンボンドロップシールをはじめとしたSCENEWORKS限定グッズ。LINEで友だち追加するだけで最新情報をゲット。',
-    link: '/store',
-    linkLabel: 'ストアへ',
-  },
-];
+/* ── ターゲット層カード ───────────────────────── */
+function AudienceCard({ num, tag, title, body, link, linkLabel }: {
+  num: string; tag: string; title: string; body: string; link: string; linkLabel: string;
+}) {
+  return (
+    <div style={{ padding: '2.5rem', borderTop: '1px solid #e0ddd7', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+        <span style={{ fontFamily: "'Noto Serif JP', serif", fontSize: '2rem', fontWeight: 700, color: '#e8d9b3', lineHeight: 1 }}>{num}</span>
+        <span style={{ fontSize: '0.68rem', letterSpacing: '0.12em', color: '#999', textTransform: 'uppercase' }}>{tag}</span>
+      </div>
+      <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#111', marginBottom: '0.9rem', lineHeight: 1.5 }}>{title}</h3>
+      <p style={{ fontSize: '0.83rem', color: '#666', lineHeight: 1.9, flex: 1 }}>{body}</p>
+      <Link to={link} style={{ marginTop: '1.5rem', textDecoration: 'none', fontSize: '0.78rem', color: '#c4a35a', letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        {linkLabel} <ArrowRight size={13} />
+      </Link>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
     <div>
-      {/* Hero */}
-      <section
-        style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          padding: '6rem 1.5rem 4rem',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Background pattern */}
-        <div style={{
-          position: 'absolute', inset: 0, opacity: 0.04,
-          backgroundImage: 'radial-gradient(circle, #f59e0b 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
-        {/* Gold accent lines */}
-        <div style={{ position: 'absolute', top: '20%', left: '-5%', width: '35%', height: '2px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)', opacity: 0.4 }} />
-        <div style={{ position: 'absolute', bottom: '25%', right: '-5%', width: '35%', height: '2px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)', opacity: 0.4 }} />
 
-        <div style={{ position: 'relative', maxWidth: '860px' }}>
-          <div style={{
-            display: 'inline-block',
-            background: 'rgba(245, 158, 11, 0.15)',
-            border: '1px solid rgba(245, 158, 11, 0.4)',
-            color: '#f59e0b',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            padding: '0.4rem 1rem',
-            borderRadius: '9999px',
-            marginBottom: '2rem',
-          }}>
-            地方×エンターテインメント × DX
+      {/* ── Hero ───────────────────────────────── */}
+      <section style={{ background: '#0d0c0a', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8rem 2rem 6rem', position: 'relative', overflow: 'hidden' }}>
+        {/* 薄いグリッドパターン */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(#252219 1px, transparent 1px), linear-gradient(90deg, #252219 1px, transparent 1px)', backgroundSize: '60px 60px', opacity: 0.35 }} />
+        {/* 中央グロー */}
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '400px', background: 'radial-gradient(ellipse, rgba(196,163,90,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <div style={{ position: 'relative', maxWidth: '860px', textAlign: 'center' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2.5rem' }}>
+            <span style={{ display: 'block', width: '2rem', height: '1px', background: '#c4a35a' }} />
+            <span style={{ fontSize: '0.68rem', letterSpacing: '0.2em', color: '#c4a35a', textTransform: 'uppercase' }}>Entertainment × Region × DX</span>
+            <span style={{ display: 'block', width: '2rem', height: '1px', background: '#c4a35a' }} />
           </div>
 
-          <h1 style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            fontWeight: 900,
-            color: '#f8fafc',
-            lineHeight: 1.25,
-            marginBottom: '1.5rem',
-            letterSpacing: '-0.02em',
-          }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 6vw, 4.2rem)', color: '#f0ede5', lineHeight: 1.2, marginBottom: '1.75rem', letterSpacing: '-0.02em' }}>
             直感と人脈が、<br />
-            <span style={{ color: '#f59e0b' }}>地方の新たなシーンを創る。</span>
+            <em style={{ fontStyle: 'normal', color: '#c4a35a' }}>地方の新たなシーンを創る。</em>
           </h1>
 
-          <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', color: '#94a3b8', lineHeight: 1.9, marginBottom: '2.5rem', maxWidth: '640px', margin: '0 auto 2.5rem' }}>
-            SCENEWORKSは、芸能界での経験と独自ネットワークを活かし、<br />
-            キャスティング・ロケコーディネート・地域ブランディングで<br />
-            地方に経済的なインパクトをもたらすプロデュース企業です。
+          <p style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)', color: '#9a9590', lineHeight: 2, marginBottom: '3rem', maxWidth: '560px', margin: '0 auto 3rem' }}>
+            芸能界で培った人脈とDX技術を掛け合わせ、<br />
+            キャスティング・ロケ・地域ブランディングで<br />
+            地方に経済的なインパクトをもたらすプロデュース企業。
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link
-              to="/services"
-              style={{
-                textDecoration: 'none',
-                background: '#f59e0b',
-                color: '#0f172a',
-                fontWeight: 700,
-                fontSize: '0.95rem',
-                padding: '0.85rem 2rem',
-                borderRadius: '0.625rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
-            >
-              無料相談を予約する <ArrowRight size={18} />
+            <Link to="/services" style={{
+              textDecoration: 'none', background: '#c4a35a', color: '#0d0c0a',
+              fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.06em',
+              padding: '0.9rem 2.2rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            }}>
+              無料相談を予約する <ArrowRight size={15} />
             </Link>
-            <Link
-              to="/works"
-              style={{
-                textDecoration: 'none',
-                background: 'rgba(255,255,255,0.08)',
-                color: '#f8fafc',
-                fontWeight: 600,
-                fontSize: '0.95rem',
-                padding: '0.85rem 2rem',
-                borderRadius: '0.625rem',
-                border: '1px solid rgba(255,255,255,0.15)',
-              }}
-            >
+            <Link to="/works" style={{
+              textDecoration: 'none',
+              border: '1px solid #252219', color: '#9a9590',
+              fontSize: '0.85rem', letterSpacing: '0.06em',
+              padding: '0.9rem 2.2rem',
+            }}>
               実績を見る
             </Link>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', color: '#475569' }}>
-          <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em' }}>SCROLL</span>
-          <div style={{ width: '1px', height: '2.5rem', background: 'linear-gradient(to bottom, #475569, transparent)' }} />
+        {/* スクロールインジケーター */}
+        <div style={{ position: 'absolute', bottom: '2.5rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', color: '#47443d' }}>
+          <span style={{ fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Scroll</span>
+          <div style={{ width: '1px', height: '2.5rem', background: 'linear-gradient(to bottom, #47443d, transparent)' }} />
         </div>
       </section>
 
-      {/* Trust Metrics */}
-      <section style={{ background: '#f8fafc', padding: '5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '0.75rem' }}>TRUST METRICS</p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: '#0f172a' }}>実績が証明する、信頼の指標</h2>
+      {/* ── 実績指標 ───────────────────────────────── */}
+      <section style={{ background: '#fff' }}>
+        <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ borderBottom: '1px solid #e0ddd7', padding: '4rem 0 1rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <span className="label">Trust Metrics</span>
+            <span style={{ flex: 1, height: '1px', background: '#e0ddd7' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
-            <MetricCard end={200} suffix="名+" label="独自タレントネットワーク" sub="芸能界の第一線とのパイプ" />
-            <MetricCard end={50} suffix="件+" label="年間コーディネート実績" sub="ロケ・イベント・キャスティング累計" />
-            <MetricCard end={30000} suffix="個+" label="グッズ累計販売数" sub="ボンボンドロップシール等" />
-            <MetricCard end={5000} suffix="名+" label="過去最大動員記録" sub="単一イベント来場者数" />
-          </div>
-        </div>
-      </section>
-
-      {/* Audience Cards */}
-      <section style={{ background: '#fff', padding: '5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '0.75rem' }}>FOR EVERYONE</p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: '#0f172a' }}>あなたのための、SCENEWORKS</h2>
-            <p style={{ color: '#64748b', marginTop: '0.75rem', fontSize: '0.95rem' }}>3つのターゲット層それぞれに最短の価値提供を設計しています</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {audiences.map((a) => (
-              <div
-                key={a.tag}
-                style={{
-                  background: '#fff',
-                  border: '1px solid #f1f5f9',
-                  borderRadius: '1rem',
-                  padding: '2rem',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <div style={{ width: '3rem', height: '3rem', borderRadius: '0.75rem', background: a.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
-                  {a.icon}
-                </div>
-                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: a.tagColor, letterSpacing: '0.06em', marginBottom: '0.5rem' }}>{a.tag}</span>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.75rem', lineHeight: 1.4 }}>{a.title}</h3>
-                <p style={{ fontSize: '0.85rem', color: '#475569', lineHeight: 1.8, flex: 1 }}>{a.body}</p>
-                <Link
-                  to={a.link}
-                  style={{
-                    marginTop: '1.5rem',
-                    textDecoration: 'none',
-                    color: a.tagColor,
-                    fontWeight: 600,
-                    fontSize: '0.85rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                  }}
-                >
-                  {a.linkLabel} <ArrowRight size={15} />
-                </Link>
-              </div>
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', borderLeft: '1px solid #e0ddd7', marginBottom: '5rem' }}>
+            <StatCard end={200}   suffix="名+" label="独自タレントネットワーク" note="芸能界第一線とのパイプ" />
+            <StatCard end={50}    suffix="件+" label="年間コーディネート実績"   note="ロケ・イベント・キャスティング" />
+            <StatCard end={30000} suffix="個+" label="グッズ累計販売数"         note="ボンボンドロップシール等" />
+            <StatCard end={5000}  suffix="名+" label="過去最大動員記録"         note="単一イベント来場者数" />
           </div>
         </div>
       </section>
 
-      {/* Service Teaser */}
-      <section style={{ background: '#0f172a', padding: '5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
+      {/* ── ターゲット別導線 ───────────────────────────── */}
+      <section style={{ background: '#f5f4ee' }}>
+        <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '6rem 2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '3.5rem' }}>
+            <span className="label">For Everyone</span>
+            <span style={{ flex: 1, height: '1px', background: '#dddad4' }} />
+          </div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#111', lineHeight: 1.35 }}>あなたのための、<br />SCENEWORKS</h2>
+          </div>
+          <p style={{ color: '#777', fontSize: '0.9rem', marginBottom: '3rem' }}>3 つのターゲット層それぞれに最短の価値提供を設計しています</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0', border: '1px solid #e0ddd7', background: '#fff' }}>
+            <AudienceCard
+              num="01" tag="Financial / Investor"
+              title="数字で証明される収益モデル"
+              body="高利益率の物販・イベントと安定ストック収益のハイブリッド構造。Lark等DXによる低コスト体質と、代表の人脈資産を数値で提示します。"
+              link="/model" linkLabel="ビジネスモデルを見る"
+            />
+            <AudienceCard
+              num="02" tag="B2B / Municipality"
+              title="地方課題を、エンタメで解決"
+              body="「地方に人が集まらない」「自社ブランドが弱い」——ロケコーディネートやキャスティングで具体的な経済効果を生み出します。"
+              link="/works" linkLabel="実績を見る"
+            />
+            <AudienceCard
+              num="03" tag="End User / Fan"
+              title="今すぐ手に入れる、熱狂の一品"
+              body="ボンボンドロップシールをはじめとした限定グッズ。LINEで友だち追加するだけで最新情報をゲット。"
+              link="/store" linkLabel="ストアへ"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── サービス紹介 ───────────────────────────────── */}
+      <section style={{ background: '#0d0c0a', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '4rem' }}>
+            <span className="label">Our Services</span>
+            <span style={{ flex: 1, height: '1px', background: '#252219' }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'start' }}>
             <div>
-              <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '0.75rem' }}>OUR SERVICES</p>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: '#f8fafc', lineHeight: 1.3, marginBottom: '1.25rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#f0ede5', lineHeight: 1.35, marginBottom: '1.25rem' }}>
                 エンタメの力で、<br />地方を動かす4つのサービス
               </h2>
-              <p style={{ color: '#94a3b8', lineHeight: 1.9, fontSize: '0.9rem', marginBottom: '2rem' }}>
-                キャスティングから地域ブランディングまで、SCENEWORKSは一貫したプロデュース力で課題を解決します。
+              <p style={{ color: '#6e6b62', lineHeight: 1.9, fontSize: '0.875rem', marginBottom: '2.5rem' }}>
+                キャスティングから地域ブランディングまで、一貫したプロデュース力で課題を解決します。
               </p>
-              <Link
-                to="/services"
-                style={{
-                  textDecoration: 'none',
-                  background: '#f59e0b',
-                  color: '#0f172a',
-                  fontWeight: 700,
-                  fontSize: '0.9rem',
-                  padding: '0.8rem 1.75rem',
-                  borderRadius: '0.625rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                }}
-              >
-                事業内容を詳しく見る <ArrowRight size={16} />
+              <Link to="/services" style={{
+                textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                border: '1px solid #c4a35a', color: '#c4a35a',
+                fontSize: '0.8rem', letterSpacing: '0.08em', padding: '0.75rem 1.5rem',
+              }}>
+                事業内容を詳しく見る <ArrowRight size={14} />
               </Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: '#252219' }}>
               {[
-                { icon: <Star size={20} color="#f59e0b" />, title: 'キャスティング', sub: 'タレント・俳優・モデル手配' },
-                { icon: <CalendarDays size={20} color="#10b981" />, title: 'ロケコーディネート', sub: 'ロケ地選定・撮影管理' },
-                { icon: <Users size={20} color="#2563eb" />, title: '地域ブランディング', sub: 'イベント企画・地域PR' },
-                { icon: <ShoppingBag size={20} color="#e63946" />, title: 'Web・SNS運用', sub: 'ストック型収益の構築' },
-              ].map((s) => (
-                <div key={s.title} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '0.75rem', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ marginBottom: '0.75rem' }}>{s.icon}</div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f8fafc', marginBottom: '0.25rem' }}>{s.title}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{s.sub}</div>
+                { num: '01', title: 'キャスティング',      sub: 'タレント・俳優・モデル手配' },
+                { num: '02', title: 'ロケコーディネート',  sub: 'ロケ地選定・撮影管理' },
+                { num: '03', title: '地域ブランディング',  sub: 'イベント企画・地域 PR' },
+                { num: '04', title: 'Web・SNS 運用',       sub: 'ストック型収益の構築' },
+              ].map(s => (
+                <div key={s.num} style={{ background: '#0d0c0a', padding: '1.75rem' }}>
+                  <div style={{ fontSize: '0.62rem', color: '#c4a35a', letterSpacing: '0.15em', marginBottom: '0.75rem' }}>{s.num}</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#f0ede5', marginBottom: '0.3rem' }}>{s.title}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#47443d' }}>{s.sub}</div>
                 </div>
               ))}
             </div>
@@ -276,34 +181,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', padding: '4rem 1.5rem', textAlign: 'center' }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: '#0f172a', marginBottom: '1rem' }}>
-            地方を変えるプロジェクト、一緒に始めませんか？
+      {/* ── CTA ───────────────────────────────────── */}
+      <section style={{ background: '#f5f4ee', padding: '7rem 2rem', textAlign: 'center' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <div className="divider" style={{ margin: '0 auto 2.5rem' }} />
+          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', color: '#111', lineHeight: 1.4, marginBottom: '1.25rem' }}>
+            地方を変えるプロジェクト、<br />一緒に始めませんか？
           </h2>
-          <p style={{ color: 'rgba(15,23,42,0.7)', fontSize: '0.95rem', marginBottom: '2rem' }}>
-            まずは無料の個別相談会でお気軽にご相談ください。Larkカレンダーで即日予約可能です。
+          <p style={{ color: '#777', fontSize: '0.875rem', lineHeight: 1.9, marginBottom: '2.5rem' }}>
+            まずは無料の個別相談会でお気軽にご相談ください。<br />Lark カレンダーで即日予約可能です。
           </p>
-          <Link
-            to="/services"
-            style={{
-              textDecoration: 'none',
-              background: '#0f172a',
-              color: '#f8fafc',
-              fontWeight: 700,
-              fontSize: '1rem',
-              padding: '1rem 2.5rem',
-              borderRadius: '0.625rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
-          >
-            無料相談を予約する <ArrowRight size={18} />
+          <Link to="/services" style={{
+            textDecoration: 'none', background: '#111', color: '#f0ede5',
+            fontWeight: 600, fontSize: '0.85rem', letterSpacing: '0.08em',
+            padding: '1rem 2.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+          }}>
+            無料相談を予約する <ArrowRight size={15} />
           </Link>
         </div>
       </section>
+
     </div>
   );
 }

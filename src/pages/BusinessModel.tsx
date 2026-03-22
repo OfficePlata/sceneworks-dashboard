@@ -1,19 +1,16 @@
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Link } from 'react-router-dom';
-import { ArrowRight, TrendingUp, Settings, DollarSign, Zap, Activity, ShieldCheck, PieChart as PieIcon } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const revenueData = [
   { name: 'キャスティング', value: 6000000 },
-  { name: 'ロケコーデ', value: 2400000 },
-  { name: 'イベント制作', value: 6000000 },
-  { name: 'Web/SNS運用', value: 3600000 },
+  { name: 'ロケコーデ',     value: 2400000 },
+  { name: 'イベント制作',   value: 6000000 },
+  { name: 'Web/SNS運用',    value: 3600000 },
 ];
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+const COLORS = ['#111111', '#c4a35a', '#888888', '#e0ddd7'];
 
-const dxEfficiencyData = [
+const dxData = [
   { name: '1月', manual: 160, automated: 40 },
   { name: '2月', manual: 160, automated: 35 },
   { name: '3月', manual: 160, automated: 30 },
@@ -21,228 +18,192 @@ const dxEfficiencyData = [
   { name: '5月', manual: 240, automated: 45 },
 ];
 
-const kpiCards = [
-  { label: '年間目標売上', value: '¥18,000,000', icon: <TrendingUp color="#2563eb" />, trend: '+12.5%', trendBg: '#d1fae5', trendColor: '#065f46' },
-  { label: '想定営業利益', value: '¥6,600,000', icon: <DollarSign color="#10b981" />, trend: '36.6% 利益率', trendBg: '#d1fae5', trendColor: '#065f46' },
-  { label: 'DX削減時間', value: '128h / 月', icon: <Zap color="#f59e0b" />, trend: '事務コスト 75% 削減', trendBg: '#fef3c7', trendColor: '#92400e' },
-  { label: '確定済み報酬', value: '¥600,000', icon: <Activity color="#ef4444" />, trend: '5月イベント分', trendBg: '#d1fae5', trendColor: '#065f46' },
+const kpis = [
+  { label: '年間目標売上',   value: '¥18,000,000', note: '前年比 +12.5%' },
+  { label: '想定営業利益',   value: '¥6,600,000',  note: '利益率 36.6%' },
+  { label: 'DX 削減時間',    value: '128 h / 月',  note: '事務コスト 75% 削減' },
+  { label: '確定済み報酬',   value: '¥600,000',    note: '5 月イベント分' },
 ];
 
-const investTable = [
-  { item: '営業活動費（招聘・商談）', amount: '¥1,500,000', intent: '大手事務所トップ層の宮崎招聘、独占契約交渉。', result: '¥27,000,000 (グッズ権利)', resultColor: '#10b981' },
-  { item: 'IT/システム構築費', amount: '¥500,000', intent: 'Lark/Lステップによる事務局自動化インフラ構築。', result: '人件費 200万円 / 年 削減', resultColor: '#2563eb' },
-  { item: '運転予備資金', amount: '¥1,000,000', intent: '不測の事態（イベント延期等）への備え。', result: 'キャッシュフローの絶対安定', resultColor: '#94a3b8' },
+const invest = [
+  { item: '営業活動費（招聘・商談）', amount: '¥1,500,000', intent: '大手事務所トップ層の宮崎招聘、独占契約交渉。', result: '¥27,000,000（グッズ権利）' },
+  { item: 'IT / システム構築費',      amount: '¥500,000',   intent: 'Lark / Lステップによる事務局自動化インフラ構築。', result: '人件費 200 万円 / 年 削減' },
+  { item: '運転予備資金',             amount: '¥1,000,000', intent: '不測の事態（イベント延期等）への備え。', result: 'キャッシュフローの安定確保' },
 ];
 
-// System integration diagram node
-function SysNode({ label, sub, color }: { label: string; sub: string; color: string }) {
-  return (
-    <div style={{ background: '#fff', border: `2px solid ${color}`, borderRadius: '0.75rem', padding: '1rem 1.25rem', minWidth: '110px', textAlign: 'center' }}>
-      <div style={{ fontWeight: 800, fontSize: '0.95rem', color }}>{label}</div>
-      <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '0.25rem' }}>{sub}</div>
-    </div>
-  );
-}
+const lbl = { fontSize: '0.68rem', letterSpacing: '0.18em', color: '#c4a35a', textTransform: 'uppercase' as const };
+const card = { background: '#fff', border: '1px solid #e0ddd7', padding: '2rem' };
 
 export default function BusinessModel() {
   return (
-    <div style={{ background: '#f8fafc' }}>
+    <div style={{ background: '#f5f4ee' }}>
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', padding: '6rem 1.5rem 4rem', textAlign: 'center' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: '#f59e0b', marginBottom: '1rem' }}>BUSINESS MODEL</p>
-          <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 900, color: '#f8fafc', lineHeight: 1.25, marginBottom: '1rem' }}>
-            大田の人脈を、<br /><span style={{ color: '#f59e0b' }}>数字で裏付けるビジネスモデル</span>
+      <section style={{ background: '#0d0c0a', padding: '8rem 2rem 6rem', textAlign: 'center' }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto' }}>
+          <p style={{ ...lbl, marginBottom: '1.5rem' }}>Business Model</p>
+          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', color: '#f0ede5', lineHeight: 1.25, marginBottom: '1.25rem' }}>
+            大田の人脈を、<br /><em style={{ fontStyle: 'normal', color: '#c4a35a' }}>数字で裏付けるビジネスモデル</em>
           </h1>
-          <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: 1.9 }}>
-            高利益フロー収益 × 安定ストック収益 × DX自動化の三位一体モデル。<br />金融機関・投資家向けに、収益の安全性と拡張性をご説明します。
+          <p style={{ color: '#6e6b62', fontSize: '0.9rem', lineHeight: 1.9, marginBottom: '1.5rem' }}>
+            高利益フロー収益 × 安定ストック収益 × DX 自動化の三位一体モデル。<br />
+            金融機関・投資家向けに収益の安全性と拡張性をご説明します。
           </p>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem', background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.3)', color: '#93c5fd', padding: '0.5rem 1rem', borderRadius: '0.5rem', fontSize: '0.8rem' }}>
-            <ShieldCheck size={16} /> 銀行・投資家向け E-E-A-T 構築コンテンツ
-          </div>
+          <span style={{ display: 'inline-block', border: '1px solid #252219', color: '#6e6b62', fontSize: '0.72rem', padding: '0.4rem 1rem', letterSpacing: '0.08em' }}>
+            銀行・投資家向け E-E-A-T 構築コンテンツ
+          </span>
         </div>
       </section>
 
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '3rem 1.5rem' }}>
-        {/* KPI Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-          {kpiCards.map((kpi, i) => (
-            <div key={i} style={{ background: '#fff', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <div style={{ padding: '0.75rem', background: '#f8fafc', borderRadius: '0.75rem' }}>{kpi.icon}</div>
-                <span style={{ fontSize: '0.7rem', fontWeight: 'bold', padding: '0.25rem 0.5rem', borderRadius: '9999px', background: kpi.trendBg, color: kpi.trendColor }}>{kpi.trend}</span>
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 0.25rem' }}>{kpi.label}</p>
-              <p style={{ fontSize: '1.4rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>{kpi.value}</p>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem' }}>
+
+        {/* KPI */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1px', background: '#e0ddd7', border: '1px solid #e0ddd7', marginBottom: '2.5rem' }}>
+          {kpis.map((k, i) => (
+            <div key={i} style={{ background: '#fff', padding: '1.75rem' }}>
+              <p style={{ fontSize: '0.72rem', color: '#999', marginBottom: '0.5rem' }}>{k.label}</p>
+              <p style={{ fontFamily: "'Noto Serif JP', serif", fontSize: '1.4rem', fontWeight: 700, color: '#111', marginBottom: '0.25rem' }}>{k.value}</p>
+              <p style={{ fontSize: '0.72rem', color: '#c4a35a' }}>{k.note}</p>
             </div>
           ))}
         </div>
 
         {/* フロー vs ストック */}
-        <div style={{ background: '#fff', borderRadius: '1rem', padding: '2rem', marginBottom: '2rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>ハイブリッド収益モデル</h2>
-          <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '1.5rem' }}>変動リスクを分散し、売上が落ちる月でも返済原資を確保できる二重収益構造</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
-            <div style={{ background: '#eff6ff', borderRadius: '0.75rem', padding: '1.5rem', border: '1px solid #bfdbfe' }}>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#2563eb', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>FLOW REVENUE ／ フロー収益</div>
-              <p style={{ fontWeight: 700, color: '#1e3a5f', fontSize: '0.95rem', marginBottom: '0.5rem' }}>高利益・プロジェクト型</p>
-              <ul style={{ fontSize: '0.825rem', color: '#475569', lineHeight: 2, paddingLeft: '1rem', margin: 0 }}>
-                <li>キャスティング費用（手数料型）</li>
-                <li>イベント制作・プロデュース</li>
-                <li>グッズ物販（原価率 20〜35%）</li>
-                <li>ロケコーディネート</li>
-              </ul>
-              <div style={{ marginTop: '1rem', fontWeight: 800, color: '#2563eb', fontSize: '1.1rem' }}>目標 ¥14,400,000 / 年</div>
-            </div>
-            <div style={{ background: '#ecfdf5', borderRadius: '0.75rem', padding: '1.5rem', border: '1px solid #a7f3d0' }}>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>STOCK REVENUE ／ ストック収益</div>
-              <p style={{ fontWeight: 700, color: '#064e3b', fontSize: '0.95rem', marginBottom: '0.5rem' }}>安定・継続契約型</p>
-              <ul style={{ fontSize: '0.825rem', color: '#475569', lineHeight: 2, paddingLeft: '1rem', margin: 0 }}>
-                <li>Web制作・保守（月額契約）</li>
-                <li>SNS運用代行（月額契約）</li>
-                <li>ロケ地登録・管理サービス</li>
-                <li>EC運用・在庫管理サポート</li>
-              </ul>
-              <div style={{ marginTop: '1rem', fontWeight: 800, color: '#10b981', fontSize: '1.1rem' }}>目標 ¥3,600,000 / 年</div>
-            </div>
+        <div style={{ ...card, marginBottom: '2rem' }}>
+          <p style={{ ...lbl, marginBottom: '1.25rem' }}>Hybrid Revenue Model</p>
+          <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#111', marginBottom: '0.5rem' }}>ハイブリッド収益モデル</h2>
+          <p style={{ fontSize: '0.82rem', color: '#777', marginBottom: '1.75rem' }}>変動リスクを分散し、売上が落ちる月でも返済原資を確保できる二重収益構造</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1px', background: '#e0ddd7' }}>
+            {[
+              { type: 'フロー収益', eng: 'Flow Revenue', color: '#111', items: ['キャスティング費用（手数料型）', 'イベント制作・プロデュース', 'グッズ物販（原価率 20〜35%）', 'ロケコーディネート'], target: '目標 ¥14,400,000 / 年' },
+              { type: 'ストック収益', eng: 'Stock Revenue', color: '#c4a35a', items: ['Web 制作・保守（月額契約）', 'SNS 運用代行（月額契約）', 'ロケ地登録・管理サービス', 'EC 運用・在庫管理サポート'], target: '目標 ¥3,600,000 / 年' },
+            ].map(r => (
+              <div key={r.type} style={{ background: '#fff', padding: '1.75rem' }}>
+                <p style={{ fontSize: '0.65rem', letterSpacing: '0.15em', color: r.color, marginBottom: '0.5rem', textTransform: 'uppercase' }}>{r.eng}</p>
+                <p style={{ fontWeight: 700, color: '#111', fontSize: '0.95rem', marginBottom: '1rem' }}>{r.type}</p>
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {r.items.map(it => (
+                    <li key={it} style={{ fontSize: '0.8rem', color: '#555', padding: '0.35rem 0', borderBottom: '1px solid #f5f4ee', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ width: '4px', height: '4px', background: r.color, flexShrink: 0 }} />{it}
+                    </li>
+                  ))}
+                </ul>
+                <p style={{ marginTop: '1rem', fontWeight: 700, color: r.color, fontSize: '0.9rem' }}>{r.target}</p>
+              </div>
+            ))}
           </div>
-          <div style={{ marginTop: '1rem', padding: '0.75rem 1rem', background: '#eff6ff', borderRadius: '0.5rem', border: '1px solid #bfdbfe', fontSize: '0.8rem', color: '#1d4ed8' }}>
-            <strong>銀行への訴求:</strong> 継続契約型（Web/SNS・ロケ）が売上の40%を占め、月次の安定した返済原資を確保。フロー収益が落ちる月もストック収益がバッファとして機能します。
+          <div style={{ marginTop: '1rem', padding: '0.85rem 1rem', background: '#f5f4ee', borderLeft: '2px solid #c4a35a', fontSize: '0.78rem', color: '#555' }}>
+            <strong>銀行への訴求：</strong>継続契約型（Web/SNS・ロケ）が売上の 40% を占め、月次の安定した返済原資を確保。フロー収益が落ちる月もストック収益がバッファとして機能します。
           </div>
         </div>
 
         {/* Charts */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
-          <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0f172a' }}>
-              <PieIcon size={18} color="#94a3b8" /> 事業別売上構成（多角化リスク分散）
-            </h3>
-            <div style={{ height: '16rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', background: '#e0ddd7', border: '1px solid #e0ddd7', marginBottom: '2rem' }}>
+          <div style={{ background: '#fff', padding: '2rem' }}>
+            <p style={{ ...lbl, marginBottom: '1.25rem' }}>Revenue Mix</p>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#111', marginBottom: '1.5rem' }}>事業別売上構成（多角化リスク分散）</h3>
+            <div style={{ height: '220px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={revenueData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={5} dataKey="value">
-                    {revenueData.map((_, index) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
+                  <Pie data={revenueData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={3} dataKey="value">
+                    {revenueData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                   </Pie>
                   <Tooltip formatter={(v) => `¥${Number(v).toLocaleString()}`} />
-                  <Legend verticalAlign="bottom" height={36} />
+                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '0.75rem' }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
-
-          <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '1rem', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0f172a' }}>
-              <Zap size={18} color="#94a3b8" /> DX自動化による「少人数高収益」モデル
-            </h3>
-            <div style={{ height: '16rem' }}>
+          <div style={{ background: '#fff', padding: '2rem' }}>
+            <p style={{ ...lbl, marginBottom: '1.25rem' }}>DX Efficiency</p>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#111', marginBottom: '1.5rem' }}>IT 自動化による「少人数高収益」モデル</h3>
+            <div style={{ height: '220px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={dxEfficiencyData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} unit="h" />
-                  <Tooltip cursor={{ fill: '#f8fafc' }} />
-                  <Legend />
-                  <Bar name="手動作業 (IT未導入想定)" dataKey="manual" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
-                  <Bar name="IT自動化後の作業時間" dataKey="automated" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                <BarChart data={dxData} barGap={4}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0ede5" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 11 }} unit="h" />
+                  <Tooltip cursor={{ fill: '#f5f4ee' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.75rem' }} />
+                  <Bar name="手動作業（IT 未導入想定）" dataKey="manual"    fill="#e0ddd7" radius={[2,2,0,0]} />
+                  <Bar name="IT 自動化後の作業時間"     dataKey="automated" fill="#111"    radius={[2,2,0,0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.75rem', fontStyle: 'italic' }}>
-              ※Lark Base・Lステップによる「ロケ地管理・在庫管理・収支計算」自動化効果。
-            </p>
           </div>
         </div>
 
-        {/* System Integration Diagram */}
-        <div style={{ background: '#fff', borderRadius: '1rem', padding: '2rem', marginBottom: '2rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
-            <Settings size={18} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} />
-            システム連携図 ── 事務作業の極限自動化
-          </h2>
-          <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '1.5rem' }}>外部人材・事務スタッフ0名でも大規模イベント運営を実現する自動化インフラ</p>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '0.75rem', padding: '1.5rem', background: '#f8fafc', borderRadius: '0.75rem' }}>
-            <SysNode label="Lark" sub="業務管理 / DB" color="#2563eb" />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <ArrowRight size={20} color="#94a3b8" />
-              <span style={{ fontSize: '0.65rem', color: '#94a3b8' }}>自動連携</span>
-            </div>
-            <SysNode label="Lステップ" sub="LINE自動応答" color="#10b981" />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <ArrowRight size={20} color="#94a3b8" />
-              <span style={{ fontSize: '0.65rem', color: '#94a3b8' }}>購買誘導</span>
-            </div>
-            <SysNode label="Stripe" sub="決済処理" color="#f59e0b" />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-              <ArrowRight size={20} color="#94a3b8" />
-              <span style={{ fontSize: '0.65rem', color: '#94a3b8' }}>売上計上</span>
-            </div>
-            <SysNode label="Lark Base" sub="収支・在庫DB" color="#2563eb" />
+        {/* System diagram */}
+        <div style={{ ...card, marginBottom: '2rem' }}>
+          <p style={{ ...lbl, marginBottom: '1.25rem' }}>System Integration</p>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111', marginBottom: '0.5rem' }}>システム連携図 ── 事務作業の極限自動化</h2>
+          <p style={{ fontSize: '0.82rem', color: '#777', marginBottom: '1.75rem' }}>外部人材・事務スタッフ 0 名でも大規模イベント運営を実現する自動化インフラ</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '0.5rem', padding: '2rem', background: '#f5f4ee' }}>
+            {[
+              { label: 'Lark', sub: '業務管理 / DB' },
+              null,
+              { label: 'Lステップ', sub: 'LINE 自動応答' },
+              null,
+              { label: 'Stripe', sub: '決済処理' },
+              null,
+              { label: 'Lark Base', sub: '収支・在庫 DB' },
+            ].map((item, i) =>
+              item === null ? (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
+                  <span style={{ color: '#c4a35a', fontSize: '1rem' }}>→</span>
+                  <span style={{ fontSize: '0.6rem', color: '#999' }}>自動連携</span>
+                </div>
+              ) : (
+                <div key={i} style={{ border: '1px solid #e0ddd7', background: '#fff', padding: '0.9rem 1.25rem', textAlign: 'center', minWidth: '100px' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#111' }}>{item.label}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#999', marginTop: '0.2rem' }}>{item.sub}</div>
+                </div>
+              )
+            )}
           </div>
-          <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {['事務スタッフ 0名運営', '在庫管理 自動化', '請求書 自動発行', 'LINE→購買 自動導線'].map(tag => (
-              <span key={tag} style={{ background: '#eff6ff', color: '#2563eb', fontSize: '0.7rem', fontWeight: 600, padding: '0.3rem 0.7rem', borderRadius: '9999px', border: '1px solid #bfdbfe' }}>{tag}</span>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1.25rem' }}>
+            {['事務スタッフ 0 名運営', '在庫管理 自動化', '請求書 自動発行', 'LINE → 購買 自動導線'].map(t => (
+              <span key={t} style={{ border: '1px solid #e0ddd7', color: '#777', fontSize: '0.7rem', padding: '0.3rem 0.75rem' }}>{t}</span>
             ))}
           </div>
         </div>
 
-        {/* Investment Table */}
-        <div style={{ background: '#fff', borderRadius: '1rem', padding: '2rem', marginBottom: '2rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', overflowX: 'auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+        {/* 融資計画 */}
+        <div style={{ ...card, marginBottom: '3rem', overflowX: 'auto' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '1.75rem' }}>
             <div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>500万円融資の「使途」と「将来の利益創出」の論理</h2>
+              <p style={{ ...lbl, marginBottom: '0.75rem' }}>Investment Plan</p>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111' }}>500 万円融資の「使途」と「将来の利益創出」の論理</h2>
             </div>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '0.7rem', color: '#94a3b8', margin: 0 }}>融資希望額</p>
-                <p style={{ fontSize: '1.25rem', fontWeight: 800, color: '#2563eb', margin: 0 }}>¥5,000,000</p>
-              </div>
-              <div style={{ width: '1px', background: '#e2e8f0' }} />
-              <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '0.7rem', color: '#94a3b8', margin: 0 }}>返済負担率 (初年度)</p>
-                <p style={{ fontSize: '1.25rem', fontWeight: 800, color: '#10b981', margin: 0 }}>17.5%</p>
-              </div>
+            <div style={{ display: 'flex', gap: '2rem' }}>
+              <div><p style={{ fontSize: '0.68rem', color: '#999', marginBottom: '0.2rem' }}>融資希望額</p><p style={{ fontFamily: "'Noto Serif JP', serif", fontSize: '1.3rem', fontWeight: 700, color: '#111' }}>¥5,000,000</p></div>
+              <div><p style={{ fontSize: '0.68rem', color: '#999', marginBottom: '0.2rem' }}>返済負担率（初年度）</p><p style={{ fontFamily: "'Noto Serif JP', serif", fontSize: '1.3rem', fontWeight: 700, color: '#c4a35a' }}>17.5%</p></div>
             </div>
           </div>
-          <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
+              <tr style={{ borderBottom: '2px solid #111' }}>
                 {['投資項目', '金額', '戦略的意図', '期待されるリターン'].map(h => (
-                  <th key={h} style={{ paddingBottom: '0.75rem', fontWeight: 600, color: '#64748b', fontSize: '0.8rem', paddingRight: '1rem' }}>{h}</th>
+                  <th key={h} style={{ paddingBottom: '0.75rem', textAlign: 'left', fontSize: '0.72rem', letterSpacing: '0.08em', color: '#999', paddingRight: '1.5rem' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {investTable.map((row, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid #f8fafc' }}>
-                  <td style={{ padding: '1rem 1rem 1rem 0', fontWeight: 700, fontSize: '0.85rem', color: '#0f172a' }}>{row.item}</td>
-                  <td style={{ padding: '1rem', fontSize: '0.85rem', color: '#1e293b', whiteSpace: 'nowrap' }}>{row.amount}</td>
-                  <td style={{ padding: '1rem', fontSize: '0.78rem', color: '#475569' }}>{row.intent}</td>
-                  <td style={{ padding: '1rem 0 1rem 1rem', fontSize: '0.85rem', fontWeight: 700, color: row.resultColor, textAlign: 'right', whiteSpace: 'nowrap' }}>{row.result}</td>
+              {invest.map((r, i) => (
+                <tr key={i} style={{ borderBottom: '1px solid #f0ede5' }}>
+                  <td style={{ padding: '1rem 1.5rem 1rem 0', fontWeight: 700, fontSize: '0.85rem', color: '#111' }}>{r.item}</td>
+                  <td style={{ padding: '1rem 1.5rem 1rem 0', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>{r.amount}</td>
+                  <td style={{ padding: '1rem 1.5rem 1rem 0', fontSize: '0.78rem', color: '#666' }}>{r.intent}</td>
+                  <td style={{ padding: '1rem 0', fontSize: '0.85rem', fontWeight: 700, color: '#c4a35a', textAlign: 'right', whiteSpace: 'nowrap' }}>{r.result}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* CTA */}
-        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-          <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.5rem' }}>詳細な事業計画書・収支シミュレーションをご希望の方はご相談ください</p>
-          <Link
-            to="/services"
-            style={{
-              textDecoration: 'none',
-              background: '#f59e0b',
-              color: '#0f172a',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              padding: '0.85rem 2rem',
-              borderRadius: '0.625rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
-          >
-            個別相談を予約する <ArrowRight size={16} />
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ color: '#777', fontSize: '0.875rem', marginBottom: '1.5rem' }}>詳細な事業計画書・収支シミュレーションをご希望の方はご相談ください</p>
+          <Link to="/services" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#111', color: '#f0ede5', fontSize: '0.82rem', letterSpacing: '0.08em', padding: '0.85rem 2rem' }}>
+            個別相談を予約する <ArrowRight size={14} />
           </Link>
         </div>
       </div>
